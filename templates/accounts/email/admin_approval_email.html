@@ -1,0 +1,9 @@
+{% autoescape off %}
+
+Hi {{user.first_name}}
+
+{% if is_approved %}
+Congragulations you are restaurant is approved.
+{% endif %}
+We are sorry you are restaurant is not approved. For more details, please contact support@foodonline.com
+{% endautoescape %}

@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
-# Create your models here.
 
 class CustomManager(BaseUserManager):
     def create_user(self, email,  password=None, **extra_fields):
@@ -29,10 +28,10 @@ class CustomManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser):
-    RESTAURANT = 1
+    VENDOR = 1
     CUSTOMER = 2
     ROLE_CHOICES = (
-        (RESTAURANT, 'Restaurant'),
+        (VENDOR, 'Vendor'),
         (CUSTOMER, 'Consumer')
     )
     firstname = models.CharField(max_length=50)
@@ -40,7 +39,7 @@ class CustomUser(AbstractBaseUser):
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=50, unique=True)
     phonenumber = models.CharField(max_length=12, blank=True, null=True)
-    role = models.PositiveSmallIntegerField(ROLE_CHOICES, blank=True, null=True)
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, blank=True, null=True)
 
     #required fields
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -58,13 +57,45 @@ class CustomUser(AbstractBaseUser):
 
     objects = CustomManager()
 
+    class Meta:
+        db_table = "customuser"
+
     def __str__(self):
-        return self.email
+        return str(self.email)
     
     def has_perm(self, perm, obj=None):
         return True
 
     def has_module_perms(self, app_label):
         return True
+    
+    def get_role(self):
+        if self.role == 1:
+            user_role = 'Vendor'
+        if self.role == 2:
+            user_role = 'Consumer'
+        return user_role
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(CustomUser, related_name='userprofile', on_delete=models.CASCADE, blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='users/profile_pictures' ,blank=True, null=True)
+    cover_picture = models.ImageField(upload_to='users/cover_picture' ,blank=True, null=True)
+    address1 = models.CharField(max_length=50, blank=True, null=True)
+    address2 = models.CharField(max_length=50, blank=True, null=True)
+    city = models.CharField(max_length=20, blank=True, null=True)
+    state = models.CharField(max_length=20, blank=True, null=True)
+    country = models.CharField(max_length=20, blank=True, null=True)
+    pincode = models.CharField(max_length=6, blank=True, null=True)
+    latitude = models.CharField(max_length=10, null=True, blank=True)
+    longitude = models.CharField(max_length=10, null=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "user_profile"
+
+    def __str__(self):
+        return str(self.user)
 
 
