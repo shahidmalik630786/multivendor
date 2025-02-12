@@ -5,51 +5,79 @@
 {% include 'alerts.html' %}
 		<!-- Main Section Start -->
 		<div class="main-section">
-			<div class="page-section restaurant-detail-image-section" style="background: url('{% static 'assets/extra-images/cover-photo01.jpg' %}') no-repeat scroll 0 0 / cover;">
-				<!-- Container Start -->
-				<div class="container">
-					<!-- Row Start -->
-					<div class="row">
-						<!-- Column Start -->
-						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-							<div class="company-info-detail">
-								<div class="company-info">
-									<div class="img-holder">
-										<figure>
-											<img src="{% static 'assets/extra-images/listing-logo18.png' %}" alt="">
-										</figure>
-									</div>
-
-									<div class="text-holder">
-										<span class="restaurant-title">Restaurant Demo</span>
-										<div class="text">
-											<i class="icon-local_pizza"></i>
-											<p>Apple Juice</p>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- Column End -->
-					</div>
-					<!-- Row End -->
-				</div>
-				<!-- Container End -->
-			</div>
+			{% include 'master/cover.html' %}
 			<div class="page-section account-header buyer-logged-in">
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-							{% include 'master/customer_sidebar.html' %}
+							{% include 'vendor/vendor-sidebar.html' %}
 						</div>
 						<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
 							<div class="user-dashboard loader-holder">
 								<div class="user-holder">
-									<div class="user-message" style="background-color:#1e73be;">
+										<div class="row d-flex" style="margin-bottom: 20px;">
+										  <div class="col-sm-4">
+											<div class="card text-center" style="width: 18rem;border: 1px solid rgb(49, 48, 48);">
+												<h6 class="mt-5" style="margin: 5px;">Total Orders</h6>
+												<div class="card-body" style="border-top: 1px solid grey;">
+												  <a href="#" class="card-title" style="margin-top: 13px;font-weight: 900;">12345</a>
+												</div>
+											  </div>
+										  </div>
+										  <div class="col-sm-4">
+											<div class="card text-center" style="width: 18rem;border: 1px solid rgb(49, 48, 48);">
+												<h6 class="mt-5" style="margin: 5px;">Total Revenue</h6>
+												<div class="card-body" style="border-top: 1px solid grey;">
+												  <a href="#" class="card-title" style="margin-top: 13px;font-weight: 900;">12345</a>
+												</div>
+											  </div>
+										  </div>
+										  <div class="col-sm-4">
+											<div class="card text-center" style="width: 18rem;border: 1px solid rgb(49, 48, 48);">
+												<h6 class="mt-5" style="margin: 5px;">This Month</h6>
+												<div class="card-body" style="border-top: 1px solid grey;">
+												  <a href="#" class="card-title" style="margin-top: 13px; font-weight: 900;">12345</a>
+												</div>
+											  </div>
+										  </div>
+										</div>
+									<!-- <div class="row">
+										<h5 class="">Overviews</h5>
+										<div class="col">
+											<div class="card text-center" style="width: 18rem;border: 1px solid rgb(49, 48, 48);">
+												<h6 class="mt-5" style="margin: 5px;">Total Orders</h6>
+												<div class="card-body" style="border-top: 1px solid grey;">
+												  <h6 class="card-title" style="margin-top: 13px;">12345</h6>
+												</div>
+											  </div>
+										</div>
+
+										<div class="col">
+											<div class="card text-center" style="width: 18rem;border: 1px solid rgb(49, 48, 48);">
+												<h6 class="mt-5" style="margin: 5px;">Total Orders</h6>
+												<div class="card-body" style="border-top: 1px solid grey;">
+												  <h6 class="card-title" style="margin-top: 13px;">12345</h6>
+												</div>
+											  </div>
+										</div>
+
+										<div class="col">
+											<div class="card text-center" style="width: 18rem;border: 1px solid rgb(49, 48, 48);">
+												<h6 class="mt-5" style="margin: 5px;">Total Orders</h6>
+												<div class="card-body" style="border-top: 1px solid grey;">
+												  <h6 class="card-title" style="margin-top: 13px;">12345</h6>
+												</div>
+											  </div>
+										</div>
+
+									</div> -->
+
+
+									<!-- <div class="user-message" style="background-color:#1e73be;">
 										<a class="close" href="#"><i class="icon-cross-out"></i></a>
 										<h2>Welcome to your Restaurant.</h2>
 										<p>Restaurant Dashboard gives you quick access to settings and tools for managing your Account like [Change address] and [Change password] . You can [manage Restaurant] Build Menu , Manage Orders, Bookings, Reviews, Memberships, Withdrawals, Earnings, Statements, Change Password, Location and if you are you Restaurant Owner can also [Manage Team]. </p>
-									</div>
+									</div> -->
 									<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 										<div class="row">
 											<div class="element-title has-border right-filters-row">

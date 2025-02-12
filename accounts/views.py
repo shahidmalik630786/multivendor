@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import UserRegisterForm
 from .models import CustomUser
+from vendor.models import Vendor
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from .utils import detect_user, send_verification_email, send_password_reset_email
@@ -65,13 +66,15 @@ def user_logout(request):
     logout(request)
     return redirect('/')
 
+@login_required
 @user_passes_test(check_is_customer)
 def customer_dashboard(request):
-    return render(request, 'accounts/customer-dashboard.html')
+    return render(request, 'customer/customer-dashboard.html')
 
+@login_required
 @user_passes_test(check_is_vendor)
 def vendor_dashboard(request):
-    return render(request, 'accounts/vendor-dashboard.html')
+    return render(request, 'vendor/vendor-dashboard.html')
 
 @login_required
 def my_profile(request):

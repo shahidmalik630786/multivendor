@@ -97,5 +97,8 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return str(self.user)
+    
+    def full_address(self):
+        return f'{self.address1}, {self.address2}'
 
 
