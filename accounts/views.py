@@ -25,6 +25,8 @@ def check_is_customer(user):
     else:
         raise PermissionDenied
 
+
+
 # Create your views here.
 def register_user(request):
     if request.user.is_authenticated:

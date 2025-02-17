@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 EXTERNAL_APPS = [
     'accounts',
     'vendor',
+    'menu',
 ]
 
 INSTALLED_APPS = INSTALLED_APPS + EXTERNAL_APPS
@@ -74,6 +75,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'accounts.context_processors.get_vendor',
+                'accounts.context_processors.google_api_key',
             ],
         },
     },
@@ -151,3 +153,6 @@ EMAIL_PORT =  587
 EMAIL_HOST_USER =  os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD =  os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS =  os.getenv('EMAIL_USE_TLS')
+
+
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')

@@ -1,0 +1,56 @@
+{% extends 'master/base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'alerts.html' %}
+<!-- Main Section Start -->
+<div class="main-section">
+    {% include 'master/cover.html' %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    {% include 'vendor/vendor-sidebar.html' %}
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <div class="user-holder">
+                            <h2>Menu Categories</h2>
+                            <hr>
+                            <div class="text-right">
+                                <button type="button" class="btn btn-grey" onclick="history.back()">>Back</button>
+                            </div>
+                            Add New Category
+                            <div class="container">
+                                <form action="{% url 'menu:add-food' %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-lg-8 col-md-12 col-sm-12">
+                                            <label for="id_description">Image</label>
+                                            {{ form.image }}
+                                        </div> 
+                                        <div class="col-lg-8 col-md-12 col-sm-12">
+                                            <label for="id_category_name">Food Title</label>
+                                            {{ form.food_title }}
+                                        </div>
+                                        <div class="col-lg-8 col-md-12 col-sm-12">
+                                            <label for="id_description">Description</label>
+                                            {{ form.description }}
+                                        </div>
+                                        <div class="col-lg-8 col-md-12 col-sm-12">
+                                            <label for="id_description">Price</label>
+                                            {{ form.price }}
+                                        </div>                                        
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Create</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+{% endblock %}

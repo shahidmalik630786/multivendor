@@ -1,14 +1,25 @@
-from django.shortcuts import render, redirect
-from .forms import VendorForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import VendorForm, VendorProfileForm
 from accounts.forms import UserRegisterForm
 from accounts.models import CustomUser, UserProfile
+from .models import Vendor
+from vendor.models import UserProfile
 from accounts.utils import send_verification_email
+from django.urls import reverse
+from django.contrib import messages
+from accounts.views import check_is_vendor
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+
+def get_data(model, user):
+    data = get_object_or_404(model, user=user)
+    return data
 
 def register_vendor(request):
     if request.method == "POST":
         user_form = UserRegisterForm(request.POST)
         vendor_form = VendorForm(request.POST, request.FILES)
-        if vendor_form.is_valid() and user_form.is_valid():
+        if vendor_form.is_valid() and user_form.is_valid(): 
             firstname = user_form.cleaned_data['firstname']
             lastname = user_form.cleaned_data['lastname']
             username = user_form.cleaned_data['username']
@@ -34,5 +45,32 @@ def register_vendor(request):
     return render(request ,'vendor/register-vendor.html', context)
 
 
+@login_required
+@user_passes_test(check_is_vendor)
 def vendor_profile(request):
-    return render(request, "vendor/vendor_profile.html")
+    profile = get_data(UserProfile, request.user)
+    vendor = get_data(Vendor, request.user)
+    print(profile)
+    print(vendor)
+    if request.method == "POST":
+        profile_form = VendorProfileForm(request.POST, request.FILES, instance=profile)
+        vendor_form = VendorForm(request.POST, request.FILES, instance=vendor)
+        
+        if profile_form.is_valid() and vendor_form.is_valid():
+            profile_form.save()
+            vendor_form.save()
+            messages.success(request, 'Profile updated successfully!')
+            return redirect(reverse("vendor:vendor-profile"))
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        profile_form = VendorProfileForm(instance=profile)
+        vendor_form = VendorForm(instance=vendor)
+    
+    context = {
+        "vendor_form": vendor_form,
+        "profile_form": profile_form,
+        "profile": profile,
+        "vendor": vendor
+    }
+    return render(request, "vendor/vendor_profile.html", context)

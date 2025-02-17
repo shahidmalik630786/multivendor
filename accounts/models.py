@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.core.validators import FileExtensionValidator
 
 
 class CustomManager(BaseUserManager):
@@ -79,10 +80,9 @@ class CustomUser(AbstractBaseUser):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(CustomUser, related_name='userprofile', on_delete=models.CASCADE, blank=True, null=True)
-    profile_picture = models.ImageField(upload_to='users/profile_pictures' ,blank=True, null=True)
-    cover_picture = models.ImageField(upload_to='users/cover_picture' ,blank=True, null=True)
-    address1 = models.CharField(max_length=50, blank=True, null=True)
-    address2 = models.CharField(max_length=50, blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='users/profile_pictures', validators=[FileExtensionValidator(allowed_extensions=['jpg', 'png'])] ,blank=True, null=True)
+    cover_picture = models.ImageField(upload_to='users/cover_picture', validators=[FileExtensionValidator(allowed_extensions=['jpg', 'png'])] ,blank=True, null=True)
+    address = models.CharField(max_length=50, blank=True, null=True)
     city = models.CharField(max_length=20, blank=True, null=True)
     state = models.CharField(max_length=20, blank=True, null=True)
     country = models.CharField(max_length=20, blank=True, null=True)
@@ -98,7 +98,8 @@ class UserProfile(models.Model):
     def __str__(self):
         return str(self.user)
     
-    def full_address(self):
-        return f'{self.address1}, {self.address2}'
+
+
+
 
 
