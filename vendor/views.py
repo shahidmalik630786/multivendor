@@ -49,6 +49,7 @@ def register_vendor(request):
 @user_passes_test(check_is_vendor)
 def vendor_profile(request):
     profile = get_data(UserProfile, request.user)
+    print(request.user)
     vendor = get_data(Vendor, request.user)
     print(profile)
     print(vendor)

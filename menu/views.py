@@ -77,20 +77,44 @@ def delete_category(request, pk=None):
 
 @login_required
 @user_passes_test(check_is_vendor)
-def add_food(request):
+def add_fooditem(request,pk=None):
+    category = get_object_or_404(Category, pk=pk)
     if request.method == "POST":
-        form = FoodItemForm(request.POST)
+        form = FoodItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            fooditem = form.save(commit=False)
+            fooditem.vendor = get_data(Vendor, request.user)
+            fooditem.category = category
+            fooditem.slug = slugify(fooditem.food_title)
+            fooditem.is_available=True
+            fooditem.save()
+            return redirect(reverse('menu:menu-builder'))
+    form = FoodItemForm()
+    context = {'form':form, "category":category}
+    return render(request, "vendor/add_food.html", context)
+
+@login_required
+@user_passes_test(check_is_vendor)
+def edit_fooditem(request, pk=None):
+    fooditem = get_object_or_404(FoodItem, pk=pk)
+    form = FoodItemForm(instance=fooditem)
+    if request.method == "POST":
+        form = FoodItemForm(request.POST, request.FILES, instance=fooditem)
         if form.is_valid():
             fooditem = form.save(commit=False)
             fooditem.vendor = get_data(Vendor, request.user)
             fooditem.slug = slugify(fooditem.food_title)
-            fooditem.is_available=True
-            fooditem.save()
-            return redirect(reverse('menu:add-food'))
-        
-    form = FoodItemForm()
-    context = {'form':form}
-    return render(request, "vendor/add_food.html", context)
+            form.save()
+            return redirect(reverse("menu:menu-builder"))
+    else:
+        context={"form":form,
+                 "fooditem":fooditem
+                 }
+        return render(request, "vendor/edit-fooditem.html", context)
 
-
-          
+@login_required
+@user_passes_test(check_is_vendor)
+def delete_fooditem(request, pk=None):
+    fooditem = get_object_or_404(FoodItem, pk=pk)
+    fooditem.delete()
+    return redirect(reverse("menu:menu-builder"))        

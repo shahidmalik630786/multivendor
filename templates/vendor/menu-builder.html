@@ -32,12 +32,12 @@
                                 <tbody>
                                     {% for cat in category %}
                                     <tr>
-                                        <th scope="row">{{cat.id}}</th>
-                                        <td>
+                                        <th scope="row" style="vertical-align: middle;">{{cat.id}}</th>
+                                        <td style="vertical-align: middle;">
                                             <div> <a href="{% url 'menu:fooditems-by-category' cat.id  %}">{{cat.category_name}}</a></div>
                                             <small class="text-muted">{{cat.description}}</small>
                                         </td>
-                                        <td>
+                                        <td style="vertical-align: middle;">
                                         <span class="" style="margin-right: 5px;">
                                             <a href="{% url 'menu:edit-category'  cat.id %}">
                                                 <i class="fa-solid fa-pen "></i>

@@ -19,7 +19,7 @@
                             <hr>
                             <h6>Category: <span class="text-uppercase text-success">{{category}}</span></h6>
                             <div class="text-right">
-                                <a href="{% url 'menu:add-food' %}" class="btn btn-success float-right m-4"><i
+                                <a href="{% url 'menu:add-fooditem' category.id %}" class="btn btn-success float-right m-4"><i
                                     class="fa-solid fa-plus"></i><span> Add Food</span></a>
                             </div>
                             {% if fooditems %}
@@ -27,19 +27,32 @@
                                 <tbody>
                                     {% for food in fooditems %}
                                     <tr>
-                                        <th scope="row">{{forloop.counter}}</th>
-                                        <td class="text-left"><img src="{{ food.image.url }}" alt="" width="40"></td>
-                                        <td>
+                                        <th scope="row" style="vertical-align: middle;">{{forloop.counter}}</th>
+                                        <td class="text-left" style="vertical-align: middle;">
+                                            
+                                            {% if food.image.url %}
+                                            <img src="{{ food.image.url }}" alt="" width="40"></td>
+                                            {% else %}
+                                            <img class="thumbnail" src="{% static 'assets/images/default-food.png' %}" alt="profile photo">
+                                            {% endif %}
+                                        <td style="vertical-align: middle;">
                                             <div>{{food}}</div>
                                         </td>
-                                        <td>
+                                        <td style="vertical-align: middle;">
+                                            {% if food.is_available %}
+                                            <span class="badge text-bg-success">Available</span>
+                                            {% else %}
+                                            <span class="badge text-bg-danger">Not Available</span>
+                                            {% endif %}
+                                        </td>
+                                        <td style="vertical-align: middle;">
                                         <span class="" style="margin-right: 5px;">
-                                            <a href="">
-                                                <i class="fa-solid fa-pen "></i>
+                                            <a href="{% url 'menu:edit-fooditem' food.id %}">
+                                                <i class="fa-solid fa-pen"></i>
                                             </a>
                                         </span>
                                         <span>
-                                            <a href="">
+                                            <a href="{% url 'menu:delete-fooditem' food.id %}">
                                                 <i class="fa-solid fa-trash text-danger"></i>
                                             </a>
                                         </span>

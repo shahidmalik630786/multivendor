@@ -29,7 +29,11 @@
 																		<li class="gal-img">
 																			<div class="drag-list">
 																				<div class="item-thumb">
+																					{% if profile.profile_picture %}
 																					<img class="thumbnail" src="/media/{{profile.profile_picture}}" alt="profile photo">
+																					{% else %}
+																					<img class="thumbnail" src="{% static 'assets/images/default-food.png' %}" alt="profile photo">
+																					{% endif %}
 																				</div>
 																			</div>
 																		</li>
@@ -55,7 +59,11 @@
 																		<li class="gal-img">
 																			<div class="drag-list">
 																				<div class="item-thumb">
-																					<img class="thumbnail" src="/media/{{profile.cover_picture}}" alt="cover-photo">
+																					{% if profile.cover_picture %}
+																					<img class="thumbnail" src="/media/{{profile.cover_picture}}" alt="cover photo">
+																					{% else %}
+																					<img class="thumbnail" src="{% static 'assets/images/default-food.png' %}" alt="cover photo">
+																					{% endif %}
 																				</div>
 																			</div>
 																		</li>
@@ -82,7 +90,11 @@
 																		<li class="gal-img">
 																			<div class="drag-list">
 																				<div class="item-thumb">
+																					{% if vendor_form.vendor_license %}
 																					<img class="thumbnail" src="/media/{{vendor.vendor_license}}" alt="vendor license">
+																					{% else %}
+																					<img class="thumbnail" src="{% static 'assets/images/default-food.png' %}" alt="vendor license">
+																					{% endif %}
 																				</div>
 																			</div>
 																		</li>
