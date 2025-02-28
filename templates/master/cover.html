@@ -19,7 +19,9 @@
                             <span class="restaurant-title">{{vendor.restaurant_name}}</span>
                             <div class="text">
                                 <i class="icon-local_pizza"></i>
+                                {% if vendor.user_profile.address %}
                                 <p>{{vendor.user_profile.address}}</p>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

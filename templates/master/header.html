@@ -3,7 +3,7 @@
     <div class="main-header">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
                     <div class="logo">
                         <figure>
                             <a href="/" class="light-logo">
@@ -189,28 +189,24 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <!-- <div class="login-option">
-                        <a class="cs-color cs-popup-joinus-btn login-popup" data-target="#sign-in" data-toggle="modal" href="#user-register">Login / Register</a><a class="get-start-btn" href="register-restaurant.html">
-                            Register
-                            Restaurant </a>
-                    </div> -->
-                    <div class="login-option" style="width: 400px;">
+                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                    <div class="login-option" style="width: 475px;">
+                        <a href="{% url 'marketplace:marketplace-listing' %}" class="btn btn-danger font-weight-bold" style="margin: 0px;">Marketplace</a>
                         {% if user.is_authenticated %}
                             <a class="cs-color cs-popup-joinus-btn login-popup" data-target="#sign-in" href="{% url 'accounts:my-profile' %}">My Profile</a>
                             <a class="cs-color cs-popup-joinus-btn login-popup" data-target="#sign-in" href="{% url 'accounts:logout' %}">Logout</a>
                             {% if not user.vendor %}
-                            <a class="get-start-btn" href="{% url 'vendor:register-vendor' %}">Register Restaurant</a>
+                                <a class="cs-color cs-popup-joinus-btn login-popup" href="{% url 'marketplace:cart' %}">
+                                    <i class="fa fa-shopping-cart text-danger"></i>
+                                    <span class="badge badge-warning" id="cart_counter" style="border-radius: 50px; position: relative; bottom: 10px; left: -5px;">{{cart_product_count}}</span>
+                                </a>
                             {% endif %}
-                        {% else %}
-                            <a class="cs-color cs-popup-joinus-btn login-popup" data-target="#sign-in" href="{% url 'accounts:login' %}">Login</a>
-                            <a class="cs-color cs-popup-joinus-btn login-popup" href="{% url 'accounts:register-user' %}">/ Register</a>
-                            {% if not user.vendor %}
-                            <a class="get-start-btn" href="{% url 'vendor:register-vendor' %}">Register Restaurant</a>
+                            {% else %}
+                                <a class="cs-color cs-popup-joinus-btn login-popup" data-target="#sign-in" href="{% url 'accounts:login' %}">Login</a>
+                                <a class="cs-color cs-popup-joinus-btn login-popup" href="{% url 'accounts:register-user' %}">/ Register</a>
+                                <a class="get-start-btn" href="{% url 'vendor:register-vendor' %}">Register Restaurant</a>
                             {% endif %}
-                        {% endif %}
                     </div>
-                    
                 </div>
             </div>
         </div>

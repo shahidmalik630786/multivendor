@@ -9,7 +9,8 @@ from django.urls import reverse
 from django.contrib import messages
 from accounts.views import check_is_vendor
 from django.contrib.auth.decorators import login_required, user_passes_test
-
+from django.template.defaultfilters import slugify
+from django.db import transaction
 
 def get_data(model, user):
     data = get_object_or_404(model, user=user)
@@ -20,24 +21,30 @@ def register_vendor(request):
         user_form = UserRegisterForm(request.POST)
         vendor_form = VendorForm(request.POST, request.FILES)
         if vendor_form.is_valid() and user_form.is_valid(): 
-            firstname = user_form.cleaned_data['firstname']
-            lastname = user_form.cleaned_data['lastname']
-            username = user_form.cleaned_data['username']
-            email = user_form.cleaned_data['email']
-            password = user_form.cleaned_data['password']
-            user = CustomUser.objects.create_user(firstname=firstname, lastname=lastname, username=username, email=email, password=password)
-            user.role = CustomUser.VENDOR
-            user.save()
-
-            vendor = vendor_form.save(commit=False)
-            vendor.user = user
-            user_profile, _ = UserProfile.objects.get_or_create(user=user)
-            vendor = vendor_form.save(commit=False)
-            vendor.user = user
-            vendor.user_profile = user_profile
-            vendor.save()
-            send_verification_email(request, user)
-            return redirect('/accounts/email-verification/')
+            try:
+                with transaction.atomic():
+                    # custom user creation
+                    firstname = user_form.cleaned_data['firstname']
+                    lastname = user_form.cleaned_data['lastname']
+                    username = user_form.cleaned_data['username']
+                    email = user_form.cleaned_data['email']
+                    password = user_form.cleaned_data['password']
+                    user = CustomUser.objects.create_user(firstname=firstname, lastname=lastname, username=username, email=email, password=password)
+                    user.role = CustomUser.VENDOR
+                    user.save()
+                    # user profile creation
+                    user_profile, _ = UserProfile.objects.get_or_create(user=user)
+                    # vendor creation
+                    vendor = vendor_form.save(commit=False)
+                    vendor.user = user
+                    vendor.restaurant_slug = slugify(vendor_form.cleaned_data['restaurant_name'])
+                    vendor.user_profile = user_profile
+                    vendor.save()
+                    send_verification_email(request, user)
+                    return redirect('/accounts/email-verification/')
+            except Exception as e:
+                print(str(e))
+                messages.error(request, str(e))
     else:
         user_form = UserRegisterForm()
         vendor_form = VendorForm()

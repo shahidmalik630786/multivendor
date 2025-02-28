@@ -8,6 +8,7 @@ class Vendor(models.Model):
     user = models.OneToOneField(CustomUser, related_name='vendor', on_delete=models.CASCADE)
     user_profile = models.OneToOneField(UserProfile, related_name='vendor_profile', on_delete=models.CASCADE)
     restaurant_name = models.CharField(max_length=15)
+    restaurant_slug = models.SlugField(max_length=100, blank=True)
     vendor_license = models.ImageField(upload_to='vendor/license', validators=[FileExtensionValidator(allowed_extensions=['jpg', 'png'])] )
     is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

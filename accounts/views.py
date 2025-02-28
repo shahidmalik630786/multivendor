@@ -25,8 +25,6 @@ def check_is_customer(user):
     else:
         raise PermissionDenied
 
-
-
 # Create your views here.
 def register_user(request):
     if request.user.is_authenticated:
@@ -77,6 +75,7 @@ def customer_dashboard(request):
 @user_passes_test(check_is_vendor)
 def vendor_dashboard(request):
     return render(request, 'vendor/vendor-dashboard.html')
+
 
 @login_required
 def my_profile(request):

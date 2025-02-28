@@ -47,6 +47,7 @@ EXTERNAL_APPS = [
     'accounts',
     'vendor',
     'menu',
+    'marketplace'
 ]
 
 INSTALLED_APPS = INSTALLED_APPS + EXTERNAL_APPS
@@ -76,6 +77,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'accounts.context_processors.get_vendor',
                 'accounts.context_processors.google_api_key',
+                'marketplace.context_processors.cart_product_count',
             ],
         },
     },
