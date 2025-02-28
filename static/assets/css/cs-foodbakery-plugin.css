@@ -167,7 +167,7 @@
 .main-search .foodbakery-locations-ajax-list li.no-location-found { color: #c33332; }
 /* main-search.fancy Start */
 .main-search.fancy { margin-bottom: 40px; }
-.main-search.fancy.bg-holder { background-color: #c33332; padding: 20px 20px 0; }
+.main-search.fancy.bg-holder { padding: 20px 20px 0; }
 .main-search.fancy .field-holder { width: 100%; }
 .main-search.fancy .field-holder ul { margin-bottom: 0; }
 .main-search.fancy .field-holder .chosen-container-single .chosen-single { padding: 10px 15px; border-radius: inherit; height: 50px; line-height: 50px; background-color: #fff; }

@@ -13,9 +13,8 @@ urlpatterns = [
     path('total-cart-count/', views.total_cart_count, name='total-cart-count'),
     path('get-cart/', views.get_cart, name='get-cart'),
     path('get-cart-amount/', views.get_cart_amount, name='get-cart-amount'),
-    path('search/<str:rest_name>/<str:location>/', views.search, name='search')
-    path('search-result/<str:rest_name>/<str:location>/', views.search_result, name='search-result')
-
+    path('search/<str:rest_name>/<str:location>/', views.search, name='search'),
+    path('search-result/<str:food_name>/<str:location>/', views.search_result, name='search-result')
 
 ]
 

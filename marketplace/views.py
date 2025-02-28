@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, HttpResponse, redirect
 from django.http import JsonResponse
 from vendor.models import Vendor
-from accounts.models import CustomUser
+from accounts.models import UserProfile
 from menu.models import Category, FoodItem
 from django.db.models import Prefetch
 from marketplace.models import Cart
@@ -123,7 +123,6 @@ def total_cart_count(request):
     except Exception as e:
         return JsonResponse({"message": str(e)}, status=500)
     
-
 def get_cart_amount(request):
     sub_total = 0
     tax = 0
@@ -139,27 +138,38 @@ def get_cart_amount(request):
     else:
         return JsonResponse({'status': 'failure', 'message': 'user not authenticated'}, status=401)
             
-    
-        
 def search(request, rest_name, location):
     context = {"rest_name":rest_name, "location":location}
     return render(request, "marketplace/search.html", context)
 
-def search_result(request, rest_name, location):
+def search_result(request, food_name=None, location=None):
+    food_name = None if food_name == "None" else food_name
+    location = None if location == "None" else location
+    print(food_name)
     if request.user.is_authenticated:
-        if rest_name:
-            data = Vendor.objects.filter(restaurant_name=)
-            return JsonResponse({"status": "success", "data": data}, status=200)
-        if location:
-            data = CustomUser.objects.filter()
-            return JsonResponse({"status": "success", "data": data}, status=200)
-        return JsonResponse({'status': 'failure', 'message': 'please search on the basis of location or restaurant name'}, status=401)
+        filters={}
+        if food_name:
+            filters["food_title__icontains"] = food_name
+            fooditem = FoodItem.objects.filter(**filters)
+        elif location:
+            filters["vendor__user_profile__address__icontains"] = location
+            fooditem = FoodItem.objects.filter(**filters)
+        else:
+            fooditem = FoodItem.objects.all()
+        data = [
+                {
+                    "restaurant_name":food.food_title,
+                    "restaurant_slug":food.slug,
+                    "location":food.vendor.user_profile.address,
+                    "user_profile": food.image.url if food.image else "/static/assets/images/default-food.png",
+                } 
+                for food in fooditem
+                ]
+        print(data)
+        return JsonResponse({"status": "success", "data": data}, status=200)
     else:
         return JsonResponse({'status': 'failure', 'message': 'user not authenticated'}, status=401)
     
 
 
 
-
-    
-    
