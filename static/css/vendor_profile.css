@@ -1,0 +1,19 @@
+.col-lg-6{
+    width: 100% !important;
+}
+
+.input-group{
+    width: 100% !important;
+}
+
+.list-group-item{
+  background-color: #ededed;
+}
+
+.list-group{
+  background-color: #ededed;  
+}
+
+#main-address div{
+    display: flex;
+}

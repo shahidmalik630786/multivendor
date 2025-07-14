@@ -1,0 +1,17 @@
+
+.spinner-border {
+    position: initial !important;
+    line-height: normal !important;
+    top: unset !important;
+    left: unset !important;
+    margin: 0 !important;
+}
+
+
+.position-absolute{
+    margin-left: 0px;
+}
+
+#id_address{
+    color: red !important;
+}

@@ -1,0 +1,65 @@
+{% extends 'master/base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'alerts.html' %}
+<!-- Main Section Start -->
+<div class="main-section">
+    {% include 'master/cover.html' %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    {% include 'vendor/vendor-sidebar.html' %}
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder" style="padding: 10px;">
+                        <div class="user-holder">
+                            <h2>Menu Categories</h2>
+                            <hr>
+                            <div class="text-right">
+                                <a href="{% url 'menu:add-category' %}" class="btn btn-info float-right m-4"><i class="fa-solid fa-plus"></i><span>
+                                        Add Category</span></a>
+                            </div>
+                            <table class="table" style="margin-top:5px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Category Name</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for cat in category %}
+                                    <tr>
+                                        <th scope="row" style="vertical-align: middle;">{{cat.id}}</th>
+                                        <td style="vertical-align: middle;">
+                                            <div> <a href="{% url 'menu:fooditems-by-category' cat.id  %}">{{cat.category_name}}</a></div>
+                                            <small class="text-muted">{{cat.description}}</small>
+                                        </td>
+                                        <td style="vertical-align: middle;">
+                                        <span class="" style="margin-right: 5px;">
+                                            <a href="{% url 'menu:edit-category'  cat.id %}">
+                                                <i class="fa-solid fa-pen "></i>
+                                            </a>
+                                        </span>
+                                        <span>
+                                            <a href="{% url 'menu:delete-category'  cat.id %}">
+                                                <i class="fa-solid fa-trash text-danger"></i>
+                                            </a>
+                                        </span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+{% endblock %}
