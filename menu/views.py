@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from vendor.models import Vendor
+from vendor.models import Vendor, OpeningHour
 from menu.models import Category, FoodItem
 from django.contrib.auth.decorators import user_passes_test, login_required
 from accounts.views import check_is_vendor
-from .forms import CategoryForm, FoodItemForm
+from .forms import CategoryForm, FoodItemForm, OpeningHourForm
 from django.urls import reverse
 from vendor.views import get_data
 from django.template.defaultfilters import slugify
@@ -119,3 +119,58 @@ def delete_fooditem(request, pk=None):
     fooditem = get_object_or_404(FoodItem, pk=pk)
     fooditem.delete()
     return redirect(reverse("menu:menu-builder"))        
+
+@login_required
+@user_passes_test(check_is_vendor)
+def opening_hour(request):
+    vendor = Vendor.objects.get(user=request.user.id)
+    opening_hours = OpeningHour.objects.filter(vendor=vendor).order_by('day', 'from_hour')
+    context = {
+        "opening_hours": opening_hours,
+    }
+    return render(request, "vendor/opening_hour.html", context)
+
+@login_required
+@user_passes_test(check_is_vendor)
+def add_opening_hour(request):
+    if request.method == 'POST':
+        form = OpeningHourForm(request.POST)
+        if form.is_valid():
+            opening_hour = form.save(commit=False)
+            opening_hour.vendor = get_data(Vendor, request.user)
+            opening_hour.save()
+            return redirect(reverse('menu:opening-hour'))
+    else:
+        form = OpeningHourForm()
+
+    context = {'form': form}
+    return render(request, 'vendor/add_opening_hour.html', context)
+
+@login_required
+@user_passes_test(check_is_vendor)
+def edit_opening_hour(request, pk=None):
+    opening_hour = get_object_or_404(OpeningHour, pk=pk)
+    
+    if request.method == "POST":
+        form = OpeningHourForm(request.POST, instance=opening_hour)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.vendor = get_data(Vendor, request.user)
+            instance.save()
+            return redirect(reverse("menu:opening-hour"))
+    else:
+        form = OpeningHourForm(instance=opening_hour)
+
+    context = {
+        "form": form,
+        "opening_hour": opening_hour
+    }
+    return render(request, "vendor/edit_opening_hour.html", context)
+
+
+@login_required
+@user_passes_test(check_is_vendor)
+def delete_opening_hour(request, pk=None):
+    category = get_object_or_404(OpeningHour, pk=pk)
+    category.delete()
+    return redirect(reverse("menu:opening-hour"))

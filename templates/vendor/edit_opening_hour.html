@@ -1,0 +1,67 @@
+{% extends 'master/base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'alerts.html' %}
+<!-- Main Section Start -->
+<div class="main-section">
+    {% include 'master/cover.html' %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    {% include 'vendor/vendor-sidebar.html' %}
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <div class="user-holder">
+                            <h2>Edit Opening Hour</h2>
+                            <hr>
+                            <div class="text-right">
+                                <button type="button" class="btn btn-grey" onclick="history.back()">>Back</button>
+                            </div>
+                            <div class="container mt-4">
+                                <form action="{% url 'menu:edit-opening-hour' opening_hour.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="{{ form.day.id_for_label }}" class="form-label">Day</label>
+                                            {{ form.day }}
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="{{ form.from_hour.id_for_label }}" class="form-label">From Hour</label>
+                                            {{ form.from_hour }}
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="{{ form.to_hour.id_for_label }}" class="form-label">To Hour</label>
+                                            {{ form.to_hour }}
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="{{ form.is_closed.id_for_label }}" class="form-label">Is Closed</label>
+                                            {{ form.is_closed }}
+                                        </div>
+
+                                        {% if form.errors %}
+                                            <div class="col-12">
+                                                <div class="alert alert-danger">
+                                                    {% for field, errors in form.errors.items %}
+                                                        {% for error in errors %}
+                                                            <div>{{ error }}</div>
+                                                        {% endfor %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mt-2">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+{% endblock %}

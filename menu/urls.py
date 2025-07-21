@@ -14,6 +14,12 @@ urlpatterns = [
     path('edit-fooditem/<int:pk>/', views.edit_fooditem, name="edit-fooditem"),
     path('delete-fooditem/<int:pk>/', views.delete_fooditem, name="delete-fooditem"),
 
+    #opening hour crud
+    path('opening-hour/', views.opening_hour, name="opening-hour"),
+    path('add-opening-hour/', views.add_opening_hour, name="add-opening-hour"),
+    path('edit-opening-hour/<int:pk>/', views.edit_opening_hour, name="edit-opening-hour"),
+    path('delete-opening-hour/<int:pk>/', views.delete_opening_hour, name="delete-opening-hour"),
+
 ]   
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

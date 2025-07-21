@@ -1,0 +1,90 @@
+{% extends 'master/base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'alerts.html' %}
+<!-- Main Section Start -->
+<div class="main-section">
+    {% include 'master/cover.html' %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    {% include 'vendor/vendor-sidebar.html' %}
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder" style="padding: 10px;">
+                        <div class="user-holder">
+                            <h2>Opening Hour</h2>
+                            <hr>
+                            <div class="text-right">
+                                <a href="{% url 'menu:add-opening-hour' %}" class="btn btn-info float-right m-4"><i class="fa-solid fa-plus"></i><span>
+                                        Add Opening Hour</span></a>
+                            </div>
+                            <table class="table" style="margin-top:5px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Day</th>
+                                        <th scope="col">From Hour</th>
+                                        <th scope="col">To Hour</th>
+                                        <th scope="col">Is Closed</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for opening_hour in opening_hours %}
+                                    <tr>
+                                        <th scope="row" style="vertical-align: middle;">{{ opening_hour.id }}</th>
+
+                                        <td style="vertical-align: middle;">
+                                            <div>{{ opening_hour.get_day_display }}</div>
+                                        </td>
+
+                                        <td style="vertical-align: middle;">
+                                            {% if not opening_hour.from_hour or not opening_hour.to_hour %}
+                                                <span class="text-muted">Closed</span>
+                                            {% else %}
+                                                <span style="margin-right: 5px;">{{ opening_hour.from_hour }}</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <td style="vertical-align: middle;">
+                                            {% if not opening_hour.from_hour or not opening_hour.to_hour %}
+                                               <span class="text-muted">Closed</span>
+                                            {% else %}
+                                                <span style="margin-right: 5px;">{{ opening_hour.to_hour }}</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <td style="vertical-align: middle;">
+                                            {{ opening_hour.is_closed|yesno:"Yes,No" }}
+                                        </td>
+
+                                        <td style="vertical-align: middle;">
+                                            <span class="" style="margin-right: 5px;">
+                                                <a href="{% url 'menu:edit-opening-hour'  opening_hour.id %}">
+                                                    <i class="fa-solid fa-pen "></i>
+                                                </a>
+                                            </span>
+                                            <span>
+                                                <a href="{% url 'menu:delete-opening-hour' opening_hour.id %}">
+                                                    <i class="fa-solid fa-trash text-danger"></i>
+                                                </a>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Section End -->
+{% endblock %}

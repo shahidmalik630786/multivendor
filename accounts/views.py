@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserRegisterForm
 from .models import CustomUser
 from django.contrib import messages
@@ -12,6 +12,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.shortcuts import render, redirect
 from .utils import get_reverse_geo_data
+from vendor.models import OpeningHour, Vendor
+from django.db.models import Case, When, IntegerField
+from datetime import datetime
+
 
 
 #restrict the customer from accessing user vendor page
@@ -78,10 +82,49 @@ def user_logout(request):
 def customer_dashboard(request):
     return render(request, 'customer/customer-dashboard.html')
 
-@login_required
-@user_passes_test(check_is_vendor)
+
 def vendor_dashboard(request):
-    return render(request, 'vendor/vendor-dashboard.html')
+    vendor = get_object_or_404(Vendor, user=request.user)
+    
+    # Get current day (0=Monday, 1=Tuesday, ..., 6=Sunday)
+    current_day = datetime.now().weekday() + 1
+    now = datetime.now()
+    current_time = now.time()
+    
+    # Create a custom ordering that puts current day first
+    opening_hours = OpeningHour.objects.filter(vendor=vendor).annotate(
+        day_order=Case(
+            When(day=current_day, then=0),
+            default=1,
+            output_field=IntegerField()
+        )
+    ).order_by('day_order', 'day', 'from_hour')
+
+    # Default status
+    status = "Closed"
+
+     # Check if vendor is open now
+    for slot in opening_hours:
+        if slot.day == current_day and not slot.is_closed:
+            # Convert from_hour and to_hour strings to time objects if they exist
+            if slot.from_hour and slot.to_hour:
+                time_format = "%I:%M %p"
+                from_time = datetime.strptime(slot.from_hour, time_format).time()
+                to_time = datetime.strptime(slot.to_hour, time_format).time()
+                # Assuming from_hour and to_hour are in "HH:MM" format
+                
+                # Check if current time is within the opening hours
+                if from_time <= current_time <= to_time:
+                    status = "Open"
+                    break 
+                else:
+                    status = "Closed"
+
+    return render(request, 'vendor/vendor-dashboard.html', {
+        'vendor': vendor,
+        'opening_hours': opening_hours,
+        'status': status
+    })
 
 
 @login_required

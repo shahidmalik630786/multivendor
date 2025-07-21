@@ -80,3 +80,5 @@ def vendor_profile(request):
         "vendor": vendor
     }
     return render(request, "vendor/vendor_profile.html", context)
+
+

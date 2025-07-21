@@ -15,13 +15,36 @@
                             </figure>
                         </div>
 
-                        <div class="text-holder">
-                            <span class="restaurant-title">{{vendor.restaurant_name}}</span>
-                            <div class="text">
+                        <div class="row">
+                            <div class="restaurant-title col text-white fs-1">
+                                {{vendor.restaurant_name}}
                                 <i class="icon-local_pizza"></i>
                                 {% if vendor.user_profile.address %}
-                                <p>{{vendor.user_profile.address}}</p>
+                                <p class="text-white fs-3" style="color: white !important;">{{vendor.user_profile.address}}</p>
                                 {% endif %}
+                            </div>
+                            <div class="text col">
+                                <h5>Opening Hours:</h5>
+                                <div class="mb-3 d-flex">
+                                    <div class="fs-3 fw-semibold mx-2 mt-1"><button type="button" class="btn btn-danger">{{status}}</button></div>
+                                    <select class="form-select">
+                                    {% for hour in opening_hours %}
+                                        <option>
+                                            <li>
+                                                <span class="opend-day">{{hour.get_day_display}}</span>
+                                                <span class="opend-time">
+                                                </span>
+                                                <small>:</small>
+                                                {% if not hour.from_hour or not hour.to_hour %}
+                                                    Closed
+                                                {% else %}
+                                                    {{ hour.from_hour }} - {{ hour.to_hour }}
+                                                {% endif %}
+                                            </li>
+                                        </option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
